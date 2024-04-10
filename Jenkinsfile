@@ -28,6 +28,11 @@ pipeline {
                     bat 'npm test -- --passWithNoTests'
                 }
             }
+            post {
+                always {
+                    echo 'Run Tests stage completed.'
+                }
+            }
         }
 
         stage('Build') {
@@ -35,6 +40,11 @@ pipeline {
                 script {
                     // Build the application
                     bat 'npm run build'
+                }
+            }
+            post {
+                always {
+                    echo 'Build stage completed.'
                 }
             }
         }
@@ -46,10 +56,18 @@ pipeline {
                     bat 'npm run start -- -p 3000'
                 }
             }
+            post {
+                always {
+                    echo 'Deploy stage completed.'
+                }
+            }
         }
     }
 
     post {
+        always {
+            echo 'Pipeline completed.'
+        }
         success {
             echo 'Build and deployment successful!'
         }
