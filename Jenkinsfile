@@ -24,7 +24,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    bat 'npm install'
+                    // Execute tests
                     bat 'npm test -- --passWithNoTests'
                 }
             }
@@ -33,6 +33,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    // Build the application
                     bat 'npm run build'
                 }
             }
@@ -41,6 +42,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
+                    // Deploy the application
                     bat 'npm run start -- -p 3000'
                 }
             }
