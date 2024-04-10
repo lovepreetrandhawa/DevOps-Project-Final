@@ -21,10 +21,18 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Unit Tests') {
             steps {
                 script {
-                    bat 'npm test  -- --passWithNoTests'
+                    bat 'npm test'
+                }
+            }
+        }
+
+        stage('Run Tests with Coverage') {
+            steps {
+                script {
+                    bat 'npm test -- --coverage'
                 }
             }
         }
@@ -40,7 +48,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    bat 'npm run start -- p 3000'
+                    bat 'npm run start -- -p 3000'
                 }
             }
         }
