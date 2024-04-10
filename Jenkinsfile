@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     // Execute tests
-                    bat 'npm test -- --passWithNoTests'
+                    bat 'npm test'
                 }
             }
         }
