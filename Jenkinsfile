@@ -49,6 +49,7 @@ pipeline {
             steps {
                 script {
                     bat 'npm run start -- -p 3000'
+                    bat 'timeout /t 30'
                 }
             }
         }
