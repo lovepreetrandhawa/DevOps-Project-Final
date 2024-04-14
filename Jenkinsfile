@@ -21,18 +21,21 @@ pipeline {
             }
         }
 
-        stage('Run Unit Tests') {
-            steps {
-                script {
-                    bat 'npm test'
+        stage('Test') {
+            parallel {
+                stage('Unit Tests') {
+                    steps {
+                        script {
+                            bat 'npm test'
+                        }
+                    }
                 }
-            }
-        }
-
-        stage('Run Tests with Coverage') {
-            steps {
-                script {
-                    bat 'npm test -- --coverage'
+                stage('Test with Coverage') {
+                    steps {
+                        script {
+                            bat 'npm test -- --coverage'
+                        }
+                    }
                 }
             }
         }
@@ -48,8 +51,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    bat 'npm run start -- -p 3000'
-                    bat 'timeout /t 30'
+                    try {
+                        bat 'npm run start -- -p 3000'
+                        bat 'timeout /t 30'
+                    } catch (err) {
+                        echo "Deployment failed: ${err}"
+                        // Add cleanup tasks if necessary
+                        // For example, rollback changes, stop services, etc.
+                    }
                 }
             }
         }
