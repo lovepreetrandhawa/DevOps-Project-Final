@@ -49,22 +49,23 @@ pipeline {
         }
 
         stage('Deploy') {
-    steps {
-        script {
-            // Start the server in the background
-            bat 'start npm run start -- -p 3000'
-            // Add a short delay to allow the server to start before moving to the next step
-            bat 'ping 127.0.0.1 -n 11 >NUL'
+            steps {
+                script {
+                    // Start the server in the background
+                    bat 'start npm run start -- -p 3000'
+                    // Add a short delay to allow the server to start before moving to the next step
+                    bat 'ping 127.0.0.1 -n 11 >NUL'
+                }
+            }
+            post {
+                failure {
+                    echo 'Deployment failed!'
+                    // Add cleanup tasks if necessary
+                    // For example, rollback changes, stop services, etc.
+                }
+            }
         }
     }
-    post {
-        failure {
-            echo 'Deployment failed!'
-            // Add cleanup tasks if necessary
-            // For example, rollback changes, stop services, etc.
-        }
-    }
-}
 
     post {
         success {
