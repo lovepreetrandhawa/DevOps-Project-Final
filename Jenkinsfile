@@ -51,7 +51,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    bat 'npm run start -- -p 3000'
+                    // Start the server in the background and redirect output to null
+                    bat 'start /B npm run start -- -p 3000 >NUL 2>&1'
+                    // Add a short delay to allow the server to start before moving to the next step
+                    bat 'timeout /t 10 /nobreak >NUL'
                 }
             }
             post {
