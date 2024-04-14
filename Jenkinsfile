@@ -48,21 +48,20 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                script {
-                    try {
-                        bat 'npm run start -- -p 3000'
-                        bat 'timeout /t 30'
-                    } catch (err) {
-                        echo "Deployment failed: ${err}"
-                        // Add cleanup tasks if necessary
-                        // For example, rollback changes, stop services, etc.
-                    }
-                }
-            }
+      stage('Deploy') {
+    steps {
+        script {
+            bat 'npm run start -- -p 3000'
         }
     }
+    post {
+        failure {
+            echo 'Deployment failed!'
+            // Add cleanup tasks if necessary
+            // For example, rollback changes, stop services, etc.
+        }
+    }
+}
 
     post {
         success {
