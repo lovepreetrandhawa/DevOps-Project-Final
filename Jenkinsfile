@@ -52,6 +52,7 @@ pipeline {
             steps {
                 script {
                     bat 'npm run build -- p 3000'
+                    bat 'npm start'
                 }
             }
         }
