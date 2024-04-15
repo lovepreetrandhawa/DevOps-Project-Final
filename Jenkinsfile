@@ -51,14 +51,11 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Start the server in the background
-                    bat 'start npm run start -- -p 3000'
-                    // Add a short delay to allow the server to start before moving to the next step
-                    bat 'ping 127.0.0.1 -n 11 >NUL'
-                     // Open the React app in the browser
-                    bat 'start http://localhost:3000'
+                    bat 'npm run start -- p 3000'
                 }
             }
+        }
+        
             post {
                 failure {
                     echo 'Deployment failed!'
