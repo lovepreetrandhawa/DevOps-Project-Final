@@ -16,7 +16,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    bat 'npm install'
+                    npmInstall()
                 }
             }
         }
@@ -26,14 +26,14 @@ pipeline {
                 stage('Unit Tests') {
                     steps {
                         script {
-                            bat 'npm test'
+                            npmTest()
                         }
                     }
                 }
                 stage('Test with Coverage') {
                     steps {
                         script {
-                            bat 'npm test -- --coverage'
+                            npmTestWithCoverage()
                         }
                     }
                 }
@@ -43,7 +43,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    bat 'npm run build'
+                    npmRunBuild()
                 }
             }
         }
@@ -51,7 +51,15 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    bat 'npm start -- -p 3000'
+                    npmStart()
+                }
+            }
+            post {
+                success {
+                    echo 'Deployment successful!'
+                }
+                failure {
+                    echo 'Deployment failed!'
                 }
             }
         }
@@ -59,10 +67,30 @@ pipeline {
 
     post {
         success {
-            echo 'Build and deployment successful!'
+            echo 'Build successful!'
         }
         failure {
-            echo 'Build or deployment failed!'
+            echo 'Build failed!'
         }
     }
+}
+
+def npmInstall() {
+    bat 'npm install'
+}
+
+def npmTest() {
+    bat 'npm test'
+}
+
+def npmTestWithCoverage() {
+    bat 'npm test -- --coverage'
+}
+
+def npmRunBuild() {
+    bat 'npm run build'
+}
+
+def npmStart() {
+    bat 'npm start -- -p 3000'
 }
